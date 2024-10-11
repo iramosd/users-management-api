@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -39,4 +40,23 @@ it('list users', function () {
     $response = (new UserService())->list();
 
     $this->assertTrue($response instanceof LengthAwarePaginator);
+});
+
+it('can add a role to user', function () {
+    $user = User::factory()->create();
+    $role = Role::factory()->create();
+    (new UserService())->addRole($user, $role);
+
+    $this->assertTrue($user->hasAnyRole($role->name));
+});
+
+it('can remove a role to user', function () {
+    $user = User::factory()->create();
+    $role = Role::factory()->create();
+
+    (new UserService())->addRole($user, $role);
+    $this->assertTrue($user->hasAnyRole($role->name));
+
+    (new UserService())->removeRole($user, $role);
+    $this->assertFalse($user->hasAnyRole($role->name));
 });
