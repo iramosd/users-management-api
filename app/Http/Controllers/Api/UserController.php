@@ -2,17 +2,27 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Contracts\UserServiceInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    private UserServiceInterface $service;
+    public function __construct() {
+        $this->service = new UserService();
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $this->authorize('viewAny', $this);
+
+        return UserResource::collection($this->service->list());
     }
 
     /**
@@ -21,6 +31,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', $this);
+
+
     }
 
     /**
