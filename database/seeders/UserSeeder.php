@@ -42,9 +42,16 @@ class UserSeeder extends Seeder
             unset($userData['role_name']);
 
             $user = User::create($userData);
-            $user->assignRole(Role::findByName($roleName));
+            $user->assignRole($roleName);
         }
 
-         User::factory(100)->create();
+        for($cont = 0; $cont < 100; $cont++) {
+            $user = User::factory()->create();
+
+            $user->assignRole(
+                fake()->randomElement([RoleEnum::ADMINISTRADOR->value, RoleEnum::REVISOR->value])
+            );
+        }
+
     }
 }
