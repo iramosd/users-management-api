@@ -14,7 +14,7 @@ class UserService implements UserServiceInterface
 
     public function list(): LengthAwarePaginator
     {
-        return User::paginate();
+        return User::paginate(20);
     }
 
     public function create(array $userData): User
