@@ -3,12 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+
+#[ObservedBy([UserObserver::class])]
 
 class User extends Authenticatable
 {
@@ -72,6 +74,6 @@ class User extends Authenticatable
 
     public function getRoleNameAttribute(): string
     {
-        return $this->roles->first()->name;
+        return $this->roles->first()->name ?? 'N/D';
     }
 }

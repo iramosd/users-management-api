@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Contracts\UserServiceInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -20,7 +22,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', $this);
+      if (! Gate::allows('viewAny', auth()->user())) {
+            abort(403);
+        }
 
         return UserResource::collection($this->service->list());
     }
@@ -28,34 +32,52 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $this->authorize('create', $this);
+        if (! Gate::allows('create', auth()->user())) {
+            abort(403);
+        }
 
-
+        return new UserResource($this->service->create($request->validated()));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        $this->authorize('view', $this);
+        if (! Gate::allows('view', auth()->user())) {
+            abort(403);
+        }
+
+        return new UserResource($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, User $user)
     {
-        $this->authorize('update', $this);
+        if (! Gate::allows('update', auth()->user())) {
+            abort(403);
+        }
+
+        $this->service->update($user, $request->validated());
+
+        return new UserResource($user);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        $this->authorize('delete', $this);
+        if (! Gate::allows('delete', auth()->user())) {
+            abort(403);
+        }
+
+        $this->service->delete($user);
+
+        return response()->noContent();
     }
 }

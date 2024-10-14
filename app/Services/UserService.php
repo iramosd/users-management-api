@@ -6,6 +6,7 @@ use App\Contracts\UserServiceInterface;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role as BaseRole;
 
 class UserService implements UserServiceInterface
@@ -19,6 +20,8 @@ class UserService implements UserServiceInterface
     public function create(array $userData): User
     {
         $userData['password'] = Hash::make($userData['password']);
+        $userData['email_verified_at'] = now();
+        $userData['remember_token'] = Str::random(10);
 
         return User::create($userData);
     }

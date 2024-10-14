@@ -29,10 +29,10 @@ class RoleSeeder extends Seeder
         foreach ($roles as $role) {
             $newRole = Role::create($role);
 
-            if($newRole === RoleEnum::ADMINISTRADOR->value)
+            if($newRole->name === RoleEnum::ADMINISTRADOR->value)
                 $newRole->givePermissionTo(Permission::all()->pluck('name'));
 
-            if($newRole === RoleEnum::REVISOR->value)
+            if($newRole->name === RoleEnum::REVISOR->value)
                 $newRole->givePermissionTo('list-users');
         }
     }
