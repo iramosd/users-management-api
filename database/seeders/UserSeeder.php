@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Administrador',
                 'email' => 'ramosdumas_ismael@hotmail.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('UsersManagement2024!'),
+                'password' => bcrypt('UsersManagement2024!'),
                 'remember_token' => Str::random(10),
                 'role_name' => RoleEnum::ADMINISTRADOR->value,
             ], [
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Revisor',
                 'email' => 'revisor@mail.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('UsersManagement2024!'),
+                'password' => bcrypt('UsersManagement2024!'),
                 'remember_token' => Str::random(10),
                 'role_name' => RoleEnum::REVISOR->value,
             ]
