@@ -22,9 +22,9 @@ class UserController extends Controller
      */
     public function index()
     {
-      /*if (! Gate::allows('viewAny', auth()->user())) {
+      if (! Gate::allows('viewAny', auth()->user())) {
             abort(403);
-        }*/
+        }
 
         return UserResource::collection($this->service->list());
     }
@@ -72,9 +72,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        /*if (! Gate::allows('delete', auth()->user())) {
+        if (! Gate::allows('delete', auth()->user())) {
             abort(403);
-        }*/
+        }
 
         $this->service->delete($user);
 
